@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import IniciarSesion from './layout/IniciarSesion';
 import Layout from './layout/Layout';
 import EditarDespacho from './pages/EditarDespacho';
+import VerDespacho from './pages/VerDespacho';
 import Inicio from './pages/Inicio';
 import LoginForm from './pages/LoginForm';
 import NuevoDespacho from './pages/NuevoDespacho';
@@ -25,6 +26,7 @@ function App() {
           <Route index element={<Inicio/>}/>
           <Route path="nuevo" element={<NuevoDespacho/>}/>
           <Route path="editar/:id" element={<EditarDespacho/>}/>
+          <Route path=":id" element={<VerDespacho/>}/>
 
         </Route>
         {/********************************************************************/}
