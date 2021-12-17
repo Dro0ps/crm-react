@@ -1,44 +1,42 @@
 import { useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import IniciarSesion from './layout/IniciarSesion';
+import Layout from './layout/Layout';
+import EditarDespacho from './pages/EditarDespacho';
+import Inicio from './pages/Inicio';
+import LoginForm from './pages/LoginForm';
+import NuevoDespacho from './pages/NuevoDespacho';
+
+
 
 function App() {
-  const [count, setCount] = useState(0)
+ 
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.jsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        {/********************************************************************/}
+        <Route path="/" element={<IniciarSesion/>}>
+        <Route index element={<LoginForm/>}/>
+
+        </Route>
+        {/********************************************************************/}
+        <Route path="/despachos" element={<Layout/>}>
+          <Route index element={<Inicio/>}/>
+          <Route path="nuevo" element={<NuevoDespacho/>}/>
+          <Route path="editar/:id" element={<EditarDespacho/>}/>
+
+        </Route>
+        {/********************************************************************/}
+
+
+        
+        
+
+
+
+      </Routes>
+    </BrowserRouter>
   )
 }
 
