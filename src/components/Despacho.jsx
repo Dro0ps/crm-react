@@ -4,10 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import React from 'react';
 
-
-
-
-const Despacho = ({despacho}) => {
+const Despacho = ({despacho, handleEliminar}) => {
 
     const navigate = useNavigate();
 
@@ -35,6 +32,7 @@ const Despacho = ({despacho}) => {
                     type='button'
                     className='bg-green-600 hover:bg-green-700 block w-full 
                     text-white p-2 uppercase font-bold text-xs mt-3'
+                    onClick={() => {navigate(`/despachos/editar/${id}`)}}
                 >Editar</button>
 
 
@@ -42,6 +40,9 @@ const Despacho = ({despacho}) => {
                     type='button'
                     className='bg-red-600 hover:bg-red-700 block w-full 
                     text-white p-2 uppercase font-bold text-xs mt-3'
+                    onClick={() => {
+                        handleEliminar(id)
+                    }}
                 >Eliminar</button>
 
             </td>

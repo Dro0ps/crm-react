@@ -25,6 +25,28 @@ const Inicio = () => {
         
     }, [])
 
+    const handleEliminar = async id => {
+        const confirmar = confirm('¿Deseas eliminar este cliente?')
+        const url = `http://localhost:4000/despachos/${id}`
+
+        if(confirmar) {
+            try {
+                const respuesta = await fetch(url, {
+                    method: 'DELETE'
+                })
+                await respuesta.json()
+
+                // Elimina del state el despacho eliminado de la api y lo actualiza
+                // llama todos los despachos que sean diferentes al id seleccionado para eliminarlo del state
+                const arrayDespachos = despachos.filter( despacho => despacho.id !== id )
+                setDespachos(arrayDespachos);
+                
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    }
+
 
 
     return (
@@ -46,6 +68,7 @@ const Inicio = () => {
                         <Despacho
                             key={despacho.id}
                             despacho={despacho}
+                            handleEliminar={handleEliminar}
                         />
                     ))}
                 </tbody>

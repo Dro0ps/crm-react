@@ -3,10 +3,11 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import Alerta from './Alerta';
 import { useNavigate } from 'react-router-dom'; // para redireccionar
+import Spinner from './Spinner';
 
 
 
-const Formulario = () => {
+const Formulario = ({despacho, cargando}) => {
 
     const navigate = useNavigate();
 
@@ -20,40 +21,59 @@ const Formulario = () => {
 
     const handleSubmit = async (valores) => {
         try {
-            const url = 'http://localhost:4000/despachos'
 
-            const respuesta = await fetch(url, {
-                method: 'POST',
-                body: JSON.stringify(valores),
-                headers: {
-                    'Content-Type' : 'application/json'
-                }
-            })
-            console.log(respuesta)
-            const resultado = await respuesta.json()
-            console.log(resultado)
+            let respuesta;
 
-            navigate('/despachos')//Redirecciona al usuario a otra ventana
+            if(despacho.id) {
+                const url = `http://localhost:4000/despachos/${despacho.id}`
+
+                respuesta = await fetch(url, {
+                    method: 'PUT',
+                    body: JSON.stringify(valores),
+                    headers: {
+                        'Content-Type' : 'application/json'
+                    }
+                })
+
+            } else {
+                const url = 'http://localhost:4000/despachos'
+
+                respuesta = await fetch(url, {
+                    method: 'POST',
+                    body: JSON.stringify(valores),
+                    headers: {
+                        'Content-Type' : 'application/json'
+                    }
+                })
+                
+            }
+
+                await respuesta.json()
+                navigate('/despachos')//Redirecciona al usuario a otra ventana
 
         } catch (error) {
             console.log(error);
         }
     }
 
+    console.log(cargando);
+
 
     return (
+        cargando ? <Spinner/> : (
         <div className='bg-white mt-10 px-5 py-10 rounded-md shadow-md md:w-3/4 mx-auto'>
             <h1 className='text-gray-600 font-bold text-xl uppercase 
-            text-center'>Agregar Despacho</h1>
+            text-center'>{ despacho?.nombre ? 'Editar Despacho' : 'Nuevo Despacho'}</h1>
 
 
             <Formik
                 initialValues={{
-                    nombre: '',
-                    direccion: '',
-                    documento: '',
-                    notas: ''
+                    nombre: despacho?.nombre ?? '',
+                    direccion: despacho?.direccion ?? '',
+                    documento: despacho?.documento ?? '',
+                    notas: despacho?.notas ?? ''
                 }}
+                enableReinitialize={true} // props muy util para formulario en conjunto con defaultProps
                 onSubmit={ async (values, {resetForm}) => {
                     await handleSubmit(values);
                     // resetForm para reiniciar el formulario
@@ -140,7 +160,7 @@ const Formulario = () => {
 
                     <input
                         type='submit'
-                        value='Agregar Despacho'
+                        value={ despacho?.nombre ? 'Editar' : 'Agregar Despacho'}
                         className='mt-5 w-full bg-orange-800 p-3 text-white uppercase font-bold text-lg
                          cursor-pointer hover:text-orange-300 transition-colors'
                     />
@@ -151,7 +171,14 @@ const Formulario = () => {
                 )}}
             </Formik>
         </div>
+        )
     )
+}
+
+// Se agregan props por defecto en caso de no recibir ningun despacho
+Formulario.defaultProps = {
+    despacho: {},
+    cargando: false
 }
 
 export default Formulario
