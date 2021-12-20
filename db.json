@@ -36,11 +36,18 @@
       "id": 7
     },
     {
-      "nombre": "Mauricio Bravo",
+      "nombre": "Mauricio Bravo22",
       "direccion": "Colombia 232, la florida",
       "documento": 50145,
       "notas": "2 pale de arroz",
       "id": 8
+    },
+    {
+      "nombre": "Sulmary Zambrano",
+      "direccion": "123",
+      "documento": 123,
+      "notas": "123",
+      "id": 9
     }
   ]
 }
